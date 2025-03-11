@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import draggable from 'vuedraggable'
 
 const todos = ref([])
 const inprogresses = ref([])
@@ -18,19 +19,25 @@ dones.value.push({ title: 'tesjklfdsatjkla' })
 <template>
   <div class="container">
     <div class="todo">
-      <li v-for="todo in todos">
-        {{ todo.title }}
-      </li>
+      <draggable v-model="todos" tag="ul" group="items">
+        <template #item="{ element: todo }">
+          <li>{{ todo.title }}</li>
+        </template>
+      </draggable>
     </div>
     <div class="inprogress">
-      <li v-for="inprogress in inprogresses">
-        {{ inprogress.title }}
-      </li>
+      <draggable v-model="inprogresses" tag="ul" group="items">
+        <template #item="{ element: inprogress }">
+          <li>{{ inprogress.title }}</li>
+        </template>
+      </draggable>
     </div>
     <div class="done">
-      <li v-for="done in dones">
-        {{ done.title }}
-      </li>
+      <draggable v-model="dones" tag="ul" group="items">
+        <template #item="{ element: done }">
+          <li>{{ done.title }}</li>
+        </template>
+      </draggable>
     </div>
   </div>
 </template>
@@ -42,11 +49,6 @@ dones.value.push({ title: 'tesjklfdsatjkla' })
   align-items: start;
   width: 100%;
   padding: 10px;
-}
-
-.container.div {
-  flex: 1;
-  text-align: start;
 }
 
 li {
