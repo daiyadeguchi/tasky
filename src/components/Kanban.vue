@@ -19,23 +19,26 @@ dones.value.push({ title: 'tesjklfdsatjkla' })
 <template>
   <div class="container">
     <div class="todo">
+      <p>Todo</p>
       <draggable v-model="todos" tag="ul" group="items">
         <template #item="{ element: todo }">
-          <li>{{ todo.title }}</li>
+          <li class="card">{{ todo.title }}</li>
         </template>
       </draggable>
     </div>
     <div class="inprogress">
+      <p>In Progress</p>
       <draggable v-model="inprogresses" tag="ul" group="items">
         <template #item="{ element: inprogress }">
-          <li>{{ inprogress.title }}</li>
+          <li class="card">{{ inprogress.title }}</li>
         </template>
       </draggable>
     </div>
     <div class="done">
+      <p>Done</p>
       <draggable v-model="dones" tag="ul" group="items">
         <template #item="{ element: done }">
-          <li>{{ done.title }}</li>
+          <li class="card">{{ done.title }}</li>
         </template>
       </draggable>
     </div>
@@ -51,7 +54,18 @@ dones.value.push({ title: 'tesjklfdsatjkla' })
   padding: 10px;
 }
 
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+
 li {
   list-style: none;
+}
+
+p {
+  text-align: center;
 }
 </style>
