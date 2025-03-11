@@ -14,13 +14,19 @@ inprogresses.value.push(
   { title: 'schedule ball game' },
 )
 dones.value.push({ title: 'make todo app' })
+
+function moved(item) {
+  if (item.removed) {
+    console.log(item.removed.element.title)
+  }
+}
 </script>
 
 <template>
   <div class="container">
     <div class="todo">
       <p>TODO</p>
-      <draggable v-model="todos" tag="ul" group="items">
+      <draggable v-model="todos" @change="moved" tag="ul" group="items">
         <template #item="{ element: todo }">
           <li class="card">{{ todo.title }}</li>
         </template>
@@ -28,7 +34,7 @@ dones.value.push({ title: 'make todo app' })
     </div>
     <div class="inprogress">
       <p>IN PROGRESS</p>
-      <draggable v-model="inprogresses" tag="ul" group="items">
+      <draggable v-model="inprogresses" @change="moved" tag="ul" group="items">
         <template #item="{ element: inprogress }">
           <li class="card">{{ inprogress.title }}</li>
         </template>
@@ -36,7 +42,7 @@ dones.value.push({ title: 'make todo app' })
     </div>
     <div class="done">
       <p>DONE</p>
-      <draggable v-model="dones" tag="ul" group="items">
+      <draggable v-model="dones" @change="moved" tag="ul" group="items">
         <template #item="{ element: done }">
           <li class="card">{{ done.title }}</li>
         </template>
