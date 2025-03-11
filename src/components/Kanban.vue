@@ -7,19 +7,19 @@ const inprogresses = ref([])
 const dones = ref([])
 
 // TODO: mock only. delete when backend is connected!
-todos.value.push({ title: 'testing' }, { title: 'another testing' })
+todos.value.push({ title: 'laundry' }, { title: 'call mom' })
 inprogresses.value.push(
-  { title: 'in progress test' },
-  { title: 'it is just test' },
-  { title: 'weee weee' },
+  { title: 'pay tax' },
+  { title: 'buy grocery' },
+  { title: 'schedule ball game' },
 )
-dones.value.push({ title: 'tesjklfdsatjkla' })
+dones.value.push({ title: 'make todo app' })
 </script>
 
 <template>
   <div class="container">
     <div class="todo">
-      <p>Todo</p>
+      <p>TODO</p>
       <draggable v-model="todos" tag="ul" group="items">
         <template #item="{ element: todo }">
           <li class="card">{{ todo.title }}</li>
@@ -27,7 +27,7 @@ dones.value.push({ title: 'tesjklfdsatjkla' })
       </draggable>
     </div>
     <div class="inprogress">
-      <p>In Progress</p>
+      <p>IN PROGRESS</p>
       <draggable v-model="inprogresses" tag="ul" group="items">
         <template #item="{ element: inprogress }">
           <li class="card">{{ inprogress.title }}</li>
@@ -35,7 +35,7 @@ dones.value.push({ title: 'tesjklfdsatjkla' })
       </draggable>
     </div>
     <div class="done">
-      <p>Done</p>
+      <p>DONE</p>
       <draggable v-model="dones" tag="ul" group="items">
         <template #item="{ element: done }">
           <li class="card">{{ done.title }}</li>
@@ -48,21 +48,26 @@ dones.value.push({ title: 'tesjklfdsatjkla' })
 <style scoped>
 .container {
   display: flex;
-  justify-content: space-evenly;
-  align-items: start;
+}
+
+.container > div {
   width: 100%;
-  padding: 10px;
+  border: 2px solid #72727265;
+  margin: 2px;
 }
 
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   padding: 16px;
-  text-align: center;
+  margin: 5px;
   background-color: #f1f1f1;
 }
 
-li {
+ul {
+  list-style-position: inside;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 p {

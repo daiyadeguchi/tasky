@@ -7,6 +7,10 @@
 </template>
 
 <style scoped>
+* {
+  margin-bottom: 10px;
+}
+
 .tasky-image {
   height: 50px;
   width: 50px;
