@@ -5,6 +5,7 @@ import draggable from 'vuedraggable'
 const todos = ref([])
 const inprogresses = ref([])
 const dones = ref([])
+const addItemPressed = ref(false)
 
 // TODO: mock only. delete when backend is connected!
 todos.value.push({ id: 0, title: 'laundry' }, { id: 1, title: 'call mom' })
@@ -22,7 +23,7 @@ function moved(item) {
 }
 
 function addItem() {
-  console.log('addItem')
+  addItemPressed.value = !addItemPressed.value
 }
 </script>
 
@@ -53,8 +54,19 @@ function addItem() {
       </draggable>
     </div>
   </div>
+  <div class="add-item-dialog">
+    <dialog v-if="addItemPressed" open>
+      <h2>Add todo item:</h2>
+      <form method="dialog">
+        <label for="title">Title: </label>
+        <input type="text" name="title" />
+        <button>Submit</button>
+        <button @click="addItem">Cancel</button>
+      </form>
+    </dialog>
+  </div>
   <div class="add-item">
-    <button @click="addItem">+</button>
+    <button @click="addItem" class="add_item_button">+</button>
   </div>
 </template>
 
@@ -77,7 +89,7 @@ function addItem() {
   background-color: #f1f1f1;
 }
 
-button {
+.add_item_button {
   height: 70px;
   width: 70px;
   position: absolute;
@@ -96,6 +108,17 @@ ul {
 }
 
 p {
+  text-align: center;
+}
+
+dialog {
+  height: 70%;
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
 }
 </style>
