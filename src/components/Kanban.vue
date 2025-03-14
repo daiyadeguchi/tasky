@@ -2,27 +2,35 @@
 import { ref } from 'vue'
 import draggable from 'vuedraggable'
 
-const todos = ref([])
-const inprogresses = ref([])
-const dones = ref([])
-const addItemPressed = ref(false)
+const todos = ref<newItem[]>([])
+const inprogresses = ref<newItem[]>([])
+const dones = ref<newItem[]>([])
+const newItem = ref<string>('')
+const addItemPressed = ref<boolean>(false)
+
+interface newItem {
+  title: string
+}
 
 // TODO: mock only. delete when backend is connected!
-todos.value.push({ id: 0, title: 'laundry' }, { id: 1, title: 'call mom' })
-inprogresses.value.push(
-  { id: 2, title: 'pay tax' },
-  { id: 3, title: 'buy grocery' },
-  { id: 4, title: 'schedule ball game' },
-)
-dones.value.push({ id: 5, title: 'make todo app' })
+// inprogresses.value.push(
+//   { title: 'pay tax' },
+//   { title: 'buy grocery' },
+//   { title: 'schedule ball game' },
+// )
+// dones.value.push({ title: 'make todo app' })
 
-function moved(item) {
+function moved(item: { removed: { element: { title: any } } }) {
   if (item.removed) {
     console.log(item.removed.element.title)
   }
 }
 
-function addItem() {
+function submitNewItem() {
+  todos.value.push({ title: newItem.value })
+}
+
+function openAddItemDialog() {
   addItemPressed.value = !addItemPressed.value
 }
 </script>
@@ -33,7 +41,7 @@ function addItem() {
       <p>TODO</p>
       <draggable v-model="todos" @change="moved" itemKey="id" tag="ul" group="items">
         <template #item="{ element: todo }">
-          <li class="card" :key="todo.id">{{ todo.title }}</li>
+          <li class="card" :key="todo.title">{{ todo.title }}</li>
         </template>
       </draggable>
     </div>
@@ -41,7 +49,7 @@ function addItem() {
       <p>IN PROGRESS</p>
       <draggable v-model="inprogresses" @change="moved" itemKey="id" tag="ul" group="items">
         <template #item="{ element: inprogress }">
-          <li class="card" :key="inprogress.id">{{ inprogress.title }}</li>
+          <li class="card" :key="inprogress.title">{{ inprogress.title }}</li>
         </template>
       </draggable>
     </div>
@@ -49,24 +57,26 @@ function addItem() {
       <p>DONE</p>
       <draggable v-model="dones" @change="moved" itemKey="id" tag="ul" group="items">
         <template #item="{ element: done }">
-          <li class="card" :key="done.id">{{ done.title }}</li>
+          <li class="card" :key="done.title">{{ done.title }}</li>
         </template>
       </draggable>
     </div>
   </div>
   <div class="add-item-dialog">
     <dialog v-if="addItemPressed" open>
-      <h2>Add todo item:</h2>
+      <h2>Add todo item</h2>
       <form method="dialog">
         <label for="title">Title: </label>
-        <input type="text" name="title" />
-        <button>Submit</button>
-        <button @click="addItem">Cancel</button>
+        <input type="text" name="title" v-model="newItem" />
+        <div class="add-item-dialog-buttons">
+          <button @click="submitNewItem">Submit</button>
+          <button @click="openAddItemDialog">Cancel</button>
+        </div>
       </form>
     </dialog>
   </div>
   <div class="add-item">
-    <button @click="addItem" class="add_item_button">+</button>
+    <button @click="openAddItemDialog" class="add-item-button">+</button>
   </div>
 </template>
 
@@ -89,7 +99,7 @@ function addItem() {
   background-color: #f1f1f1;
 }
 
-.add_item_button {
+.add-item-button {
   height: 70px;
   width: 70px;
   position: absolute;
@@ -99,6 +109,13 @@ function addItem() {
   background-color: rgb(167, 248, 248);
   border-radius: 50%;
   font-size: 40px;
+}
+
+.add-item-dialog-buttons {
+  position: absolute;
+  bottom: 20%;
+  right: 50%;
+  left: 50%;
 }
 
 ul {
@@ -120,5 +137,7 @@ dialog {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  border-radius: 2%;
+  background-color: white;
 }
 </style>
