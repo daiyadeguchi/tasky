@@ -12,14 +12,6 @@ interface newItem {
   title: string
 }
 
-// TODO: mock only. delete when backend is connected!
-// inprogresses.value.push(
-//   { title: 'pay tax' },
-//   { title: 'buy grocery' },
-//   { title: 'schedule ball game' },
-// )
-// dones.value.push({ title: 'make todo app' })
-
 function moved(item: { removed: { element: { title: any } } }) {
   if (item.removed) {
     console.log(item.removed.element.title)
