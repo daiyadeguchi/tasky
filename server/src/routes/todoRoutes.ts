@@ -1,11 +1,12 @@
 import { Router } from "express";
 import selectTodos from "../usecase/selectTodos"
+import selectAllTodos from "../infractructure/todoPersistence";
 
 const router = Router();
 
-router.get("/todos", async (req, res) => {
+router.get("/todos", async (_, res) => {
   try {
-    Promise.all([selectTodos]).then((todos) => {
+    Promise.all([selectTodos({ selectAllTodos })]).then((todos) => {
       res.json(todos);
     })
   } catch (err) {

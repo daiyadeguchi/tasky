@@ -6,6 +6,10 @@ declare global {
     title: string;
     description: string;
   }
+
+  interface selectTodosDependency {
+    selectAllTodos: () => Promise<TodoItem[]>;
+  }
 }
 
 export default global;

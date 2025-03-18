@@ -1,28 +1,3 @@
-import pg, { ClientConfig, QueryResult } from 'pg';
-
-async function selectTodos() {
-  const dbConfig: ClientConfig = {
-    user: 'postgres',
-    password: 'postgres',
-    host: '127.0.0.1',
-    port: 5432,
-    database: 'tasky-db'
-  }
-
-  const client = new pg.Client(dbConfig);
-
-  var items: TodoItem[] = [];
-
-  client.connect()
-  await client.query('SELECT * FROM todos')
-    .then((result: QueryResult) => {
-      for (var res of result.rows) {
-        items.push({ id: res['id'], status: res['status'], title: res['title'], description: res['description'] });
-      }
-      client.end();
-    });
-
-  return items;
+export default async function selectTodos(selectTodosDependency: selectTodosDependency): Promise<TodoItem[]> {
+  return selectTodosDependency.selectAllTodos();
 }
-
-export default selectTodos();
