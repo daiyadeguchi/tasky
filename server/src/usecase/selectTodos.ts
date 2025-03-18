@@ -1,12 +1,5 @@
 import pg, { ClientConfig, QueryResult } from 'pg';
 
-interface TodoItem {
-  id: number
-  status: number
-  title: string
-  description: string
-}
-
 async function selectTodos() {
   const dbConfig: ClientConfig = {
     user: 'postgres',
