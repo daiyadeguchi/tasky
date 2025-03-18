@@ -1,3 +1,4 @@
+import { QueryResult } from "pg";
 
 declare global {
   interface TodoItem {
@@ -9,6 +10,12 @@ declare global {
 
   interface selectTodosDependency {
     selectAllTodos: () => Promise<TodoItem[]>;
+  }
+
+  interface addTodoDependency {
+    title: string;
+    description: string;
+    addTodoItem: (title: string, description: string) => void;
   }
 }
 

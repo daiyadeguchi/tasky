@@ -1,19 +1,18 @@
 import pg, { ClientConfig, QueryResult } from 'pg';
 
-export default async function selectAllTodos(): Promise<TodoItem[]> {
-  const dbConfig: ClientConfig = {
-    user: 'postgres',
-    password: 'postgres',
-    host: '127.0.0.1',
-    port: 5432,
-    database: 'tasky-db'
-  }
+const dbConfig: ClientConfig = {
+  user: 'postgres',
+  password: 'postgres',
+  host: '127.0.0.1',
+  port: 5432,
+  database: 'tasky-db'
+}
+
+export const selectAllTodos = async (): Promise<TodoItem[]> => {
+  const client = new pg.Client(dbConfig);
+  client.connect()
 
   var items: TodoItem[] = [];
-
-  const client = new pg.Client(dbConfig);
-
-  client.connect()
   await client.query('SELECT * FROM todos')
     .then((result: QueryResult) => {
       for (var res of result.rows) {
@@ -25,3 +24,8 @@ export default async function selectAllTodos(): Promise<TodoItem[]> {
   return items;
 }
 
+export const addTodoItem = async (title: string, description: string) => {
+  const client = new pg.Client(dbConfig);
+  client.connect()
+  await client.query('INSERT INTO todos (status, title, description) VALUES (0, $1, $2)', [title, description]);
+}
