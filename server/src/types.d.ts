@@ -17,6 +17,14 @@ declare global {
     description: string;
     addTodoItem: (title: string, description: string) => void;
   }
+
+  interface updateTodoDependency {
+    id: string;
+    status: number;
+    title: string;
+    description: string;
+    updateTodoItem: (id: string, status: number, title: string, description: string) => void;
+  }
 }
 
 export default global;

@@ -27,5 +27,16 @@ export const selectAllTodos = async (): Promise<TodoItem[]> => {
 export const addTodoItem = async (title: string, description: string) => {
   const client = new pg.Client(dbConfig);
   client.connect()
-  await client.query('INSERT INTO todos (status, title, description) VALUES (0, $1, $2)', [title, description]);
+
+  await client.query('INSERT INTO todos (status, title, description) VALUES (0, $1, $2)', [title, description])
+    .then(() => client.end());
+}
+
+export const updateTodoItem = async (id: string, status: number, title: string, description: string) => {
+  const client = new pg.Client(dbConfig);
+  client.connect();
+
+  await client.query('UPDATE todos SET status=$1, title=$2, description=$3 WHERE id=$4', [status, title, description, id])
+    .then(() => client.end());
+
 }

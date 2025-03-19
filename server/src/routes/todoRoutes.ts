@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { selectTodos, addTodo } from "../usecase/todos"
-import { selectAllTodos, addTodoItem } from "../infractructure/todoPersistence";
+import { selectTodos, addTodo, updateTodo } from "../usecase/todos"
+import { selectAllTodos, addTodoItem, updateTodoItem } from "../infractructure/todoPersistence";
 
 const router = Router();
 
@@ -14,11 +14,22 @@ router.get("/todos", async (_, res) => {
 });
 
 router.post("/todo", async (req, res) => {
+  const { title, description } = req.body;
   try {
-    const { title, description } = req.body;
     await addTodo({ title, description, addTodoItem });
     res.status(200).send("Successfully Added!");
   } catch (err) {
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.put("/updateTodo/:id", async (req, res) => {
+  const { id } = req.params;
+  const { status, title, description } = req.body;
+  try {
+    await updateTodo({ id, status, title, description, updateTodoItem })
+    res.status(200).send("Successfully updated!");
+  } catch {
     res.status(500).send("Internal Server Error");
   }
 })
