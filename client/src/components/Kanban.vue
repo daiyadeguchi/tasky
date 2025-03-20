@@ -1,15 +1,41 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import draggable from 'vuedraggable'
 
-const todos = ref<newItem[]>([])
-const inprogresses = ref<newItem[]>([])
-const dones = ref<newItem[]>([])
+const todos = ref<TodoItem[]>([])
+const inprogresses = ref<TodoItem[]>([])
+const dones = ref<TodoItem[]>([])
 const newItem = ref<string>('')
 const addItemPressed = ref<boolean>(false)
 
-interface newItem {
-  title: string
+interface TodoItem {
+  id?: number,
+  status: number,
+  title: string,
+  description?: string
+}
+
+onMounted(() => {
+  getTodos();
+})
+
+async function getTodos() {
+  const results: TodoItem[] = await fetch('http://127.0.0.1:3000/api/todos')
+    .then(response => response.json())
+  results.forEach((res) => {
+    const newItem = { id: res.id, status: res.status, title: res.title, description: res.description }
+    switch (res.status) {
+      case 0:
+        todos.value.push(newItem);
+        break;
+      case 1:
+        inprogresses.value.push(newItem);
+        break;
+      case 2:
+        dones.value.push(newItem);
+        break;
+    }
+  })
 }
 
 function moved(item: { removed: { element: { title: any } } }) {
@@ -19,7 +45,7 @@ function moved(item: { removed: { element: { title: any } } }) {
 }
 
 function submitNewItem() {
-  todos.value.push({ title: newItem.value })
+  todos.value.push({ status: 0, title: newItem.value })
 }
 
 function openAddItemDialog() {
@@ -33,7 +59,7 @@ function openAddItemDialog() {
       <p>TODO</p>
       <draggable v-model="todos" @change="moved" itemKey="id" tag="ul" group="items">
         <template #item="{ element: todo }">
-          <li class="card" :key="todo.title">{{ todo.title }}</li>
+          <li class="card" :key="todo.id">{{ todo.title }}</li>
         </template>
       </draggable>
     </div>
@@ -41,7 +67,7 @@ function openAddItemDialog() {
       <p>IN PROGRESS</p>
       <draggable v-model="inprogresses" @change="moved" itemKey="id" tag="ul" group="items">
         <template #item="{ element: inprogress }">
-          <li class="card" :key="inprogress.title">{{ inprogress.title }}</li>
+          <li class="card" :key="inprogress.id">{{ inprogress.title }}</li>
         </template>
       </draggable>
     </div>
@@ -49,7 +75,7 @@ function openAddItemDialog() {
       <p>DONE</p>
       <draggable v-model="dones" @change="moved" itemKey="id" tag="ul" group="items">
         <template #item="{ element: done }">
-          <li class="card" :key="done.title">{{ done.title }}</li>
+          <li class="card" :key="done.id">{{ done.title }}</li>
         </template>
       </draggable>
     </div>
@@ -78,7 +104,7 @@ function openAddItemDialog() {
   display: flex;
 }
 
-.container > div {
+.container>div {
   width: 100%;
   border: 2px solid #72727265;
   margin: 2px;

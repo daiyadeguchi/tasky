@@ -10,6 +10,14 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
+  server: {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST", "PUT"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      preflightContinue: true
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
