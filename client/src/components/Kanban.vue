@@ -10,7 +10,7 @@ const addItemPressed = ref<boolean>(false)
 
 interface TodoItem {
   id?: number,
-  status: number,
+  status?: number,
   title: string,
   description?: string
 }
@@ -44,8 +44,14 @@ function moved(item: { removed: { element: { title: any } } }) {
   }
 }
 
-function submitNewItem() {
-  todos.value.push({ status: 0, title: newItem.value })
+async function submitNewItem() {
+  todos.value.push({ title: newItem.value });
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title: newItem.value, description: "" })
+  }
+  await fetch('http://127.0.0.1:3000/api/todo', requestOptions);
 }
 
 function openAddItemDialog() {
