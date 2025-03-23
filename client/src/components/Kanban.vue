@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import draggable from 'vuedraggable'
 
 const todos = ref<TodoItem[]>([])
@@ -38,10 +38,25 @@ async function getTodos() {
   })
 }
 
-function moved(item: { removed: { element: { title: any } } }) {
-  if (item.removed) {
-    console.log(item.removed.element.title)
+watch(todos, async (newTodo, _) => {
+  newTodo.forEach((todo) => {
+    const newItem = { id: todo.id, status: todo.status, title: todo.title, description: todo.description }
+    if (newItem.status !== 0) {
+      updateTodo(newItem)
+    }
+  })
+})
+
+async function updateTodo(newItem: TodoItem) {
+  const requestOptions = {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      status: 0, title: newItem.title, description:
+        newItem.description
+    })
   }
+  await fetch(`http://127.0.0.1:3000/api/updateTodo/${newItem.id}`, requestOptions);
 }
 
 async function submitNewItem() {
@@ -63,7 +78,7 @@ function openAddItemDialog() {
   <div class="container">
     <div class="todo">
       <p>TODO</p>
-      <draggable v-model="todos" @change="moved" itemKey="id" tag="ul" group="items">
+      <draggable v-model="todos" itemKey="id" tag="ul" group="items">
         <template #item="{ element: todo }">
           <li class="card" :key="todo.id">{{ todo.title }}</li>
         </template>
@@ -71,7 +86,7 @@ function openAddItemDialog() {
     </div>
     <div class="inprogress">
       <p>IN PROGRESS</p>
-      <draggable v-model="inprogresses" @change="moved" itemKey="id" tag="ul" group="items">
+      <draggable v-model="inprogresses" itemKey="id" tag="ul" group="items">
         <template #item="{ element: inprogress }">
           <li class="card" :key="inprogress.id">{{ inprogress.title }}</li>
         </template>
@@ -79,7 +94,7 @@ function openAddItemDialog() {
     </div>
     <div class="done">
       <p>DONE</p>
-      <draggable v-model="dones" @change="moved" itemKey="id" tag="ul" group="items">
+      <draggable v-model="dones" itemKey="id" tag="ul" group="items">
         <template #item="{ element: done }">
           <li class="card" :key="done.id">{{ done.title }}</li>
         </template>
