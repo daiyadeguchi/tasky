@@ -42,17 +42,26 @@ watch(todos, async (newTodo, _) => {
   newTodo.forEach((todo) => {
     const newItem = { id: todo.id, status: todo.status, title: todo.title, description: todo.description }
     if (newItem.status !== 0) {
-      updateTodo(newItem)
+      updateItem(newItem, 0)
     }
   })
 })
 
-async function updateTodo(newItem: TodoItem) {
+watch(inprogresses, async (newInProgress, _) => {
+  newInProgress.forEach((inProgress) => {
+    const newInProgress = { id: inProgress.id, status: inProgress.status, title: inProgress.title, description: inProgress.description }
+    if (newInProgress.status !== 1) {
+      updateItem(newInProgress, 1)
+    }
+  })
+})
+
+async function updateItem(newItem: TodoItem, status: number) {
   const requestOptions = {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      status: 0, title: newItem.title, description:
+      status: status, title: newItem.title, description:
         newItem.description
     })
   }
