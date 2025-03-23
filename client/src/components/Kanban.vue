@@ -56,6 +56,16 @@ watch(inprogresses, async (newInProgress, _) => {
   })
 })
 
+watch(dones, async (newDone, _) => {
+  newDone.forEach((done) => {
+    const newItem = { id: done.id, status: done.status, title: done.title, description: done.description }
+    if (newItem.status !== 2) {
+      updateItem(newItem, 2)
+    }
+
+  })
+})
+
 async function updateItem(newItem: TodoItem, status: number) {
   const requestOptions = {
     method: "PUT",
