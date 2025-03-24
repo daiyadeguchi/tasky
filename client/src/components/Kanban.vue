@@ -6,6 +6,7 @@ const todos = ref<TodoItem[]>([])
 const inprogresses = ref<TodoItem[]>([])
 const dones = ref<TodoItem[]>([])
 const newItem = ref<string>('')
+const newDescription = ref<string>('')
 const addItemPressed = ref<boolean>(false)
 
 interface TodoItem {
@@ -83,7 +84,7 @@ async function submitNewItem() {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title: newItem.value, description: "" })
+    body: JSON.stringify({ title: newItem.value, description: newDescription.value })
   }
   await fetch('http://127.0.0.1:3000/api/todo', requestOptions);
 }
@@ -125,7 +126,9 @@ function openAddItemDialog() {
       <h2>Add todo item</h2>
       <form method="dialog">
         <label for="title">Title: </label>
-        <input type="text" name="title" v-model="newItem" />
+        <input type="text" name="title" v-model="newItem" /><br />
+        <label for="description">Description: </label>
+        <textarea name="description" v-model="newDescription" />
         <div class="add-item-dialog-buttons">
           <button @click="submitNewItem">Submit</button>
           <button @click="openAddItemDialog">Cancel</button>
@@ -148,6 +151,7 @@ function openAddItemDialog() {
   width: 100%;
   border: 2px solid #72727265;
   margin: 2px;
+  border-radius: 2%;
 }
 
 .card {
