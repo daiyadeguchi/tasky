@@ -41,8 +41,8 @@ async function getTodos() {
 
 watch(todos, async (newTodo, _) => {
   newTodo.forEach((todo) => {
-    const newItem = { id: todo.id, status: todo.status, title: todo.title, description: todo.description }
-    if (newItem.status !== 0) {
+    if (todo.status !== 0) {
+      const newItem = { id: todo.id, status: todo.status, title: todo.title, description: todo.description }
       updateItem(newItem, 0)
     }
   })
@@ -50,8 +50,8 @@ watch(todos, async (newTodo, _) => {
 
 watch(inprogresses, async (newInProgress, _) => {
   newInProgress.forEach((inProgress) => {
-    const newInProgress = { id: inProgress.id, status: inProgress.status, title: inProgress.title, description: inProgress.description }
-    if (newInProgress.status !== 1) {
+    if (inProgress.status !== 1) {
+      const newInProgress = { id: inProgress.id, status: inProgress.status, title: inProgress.title, description: inProgress.description }
       updateItem(newInProgress, 1)
     }
   })
@@ -59,11 +59,10 @@ watch(inprogresses, async (newInProgress, _) => {
 
 watch(dones, async (newDone, _) => {
   newDone.forEach((done) => {
-    const newItem = { id: done.id, status: done.status, title: done.title, description: done.description }
-    if (newItem.status !== 2) {
+    if (done.status !== 2) {
+      const newItem = { id: done.id, status: done.status, title: done.title, description: done.description }
       updateItem(newItem, 2)
     }
-
   })
 })
 
