@@ -9,7 +9,7 @@ createApp(App)
     domain: import.meta.env.VITE_AUTH0_DOMAIN,
     clientId: import.meta.env.VITE_AUTH0_CLIENTID,
     authorizationParams: {
-      redirect_uri: import.meta.env.VITE_APP_URL + "/"
+      redirect_uri: import.meta.env.VITE_REDIRECT_URI
     }
   }))
   .mount('#app')
