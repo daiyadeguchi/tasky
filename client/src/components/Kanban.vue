@@ -21,7 +21,7 @@ onMounted(() => {
 })
 
 async function getTodos() {
-  const results: TodoItem[] = await fetch('http://127.0.0.1:3000/api/todos')
+  const results: TodoItem[] = await fetch(`${import.meta.env.VITE_APP_URL}/api/todos`)
     .then(response => response.json())
   results.forEach((res) => {
     const newItem = { id: res.id, status: res.status, title: res.title, description: res.description }
