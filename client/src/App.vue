@@ -1,11 +1,27 @@
 <script setup lang="ts">
-import Kanban from './components/Kanban.vue'
-import Header from './components/Header.vue'
+import { RouterLink, RouterView } from 'vue-router';
 </script>
 
 <template>
-  <Header />
-  <Kanban />
+  <div class="header">
+    <div class="tasky-image">
+      <img src="./assets/tasky.svg" />
+    </div>
+    <nav>
+      <RouterLink to="/">Todo</RouterLink>
+      <RouterLink to="/login">Login</RouterLink>
+    </nav>
+  </div>
+  <RouterView />
 </template>
 
-<style scoped></style>
+<style scoped>
+.header {
+  margin-bottom: 10px;
+}
+
+.tasky-image {
+  height: 50px;
+  width: 50px;
+}
+</style>
