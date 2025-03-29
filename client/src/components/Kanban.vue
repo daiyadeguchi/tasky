@@ -75,7 +75,7 @@ async function updateItem(newItem: TodoItem, status: number) {
         newItem.description
     })
   }
-  await fetch(`http://127.0.0.1:3000/api/updateTodo/${newItem.id}`, requestOptions);
+  await fetch(`${import.meta.env.VITE_BACKEND_APP_URL}/api/updateTodo/${newItem.id}`, requestOptions);
 }
 
 async function submitNewItem() {
@@ -85,7 +85,7 @@ async function submitNewItem() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title: newItem.value, description: newDescription.value })
   }
-  await fetch('http://127.0.0.1:3000/api/todo', requestOptions);
+  await fetch(`${import.meta.env.VITE_BACKEND_APP_URL}/api/todo`, requestOptions);
 }
 
 function openAddItemDialog() {
